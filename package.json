@@ -1,5 +1,0 @@
-{
-  "dependencies": {
-    "@aws-sdk/client-cognito-identity": "^3.332.0"
-  }
-}

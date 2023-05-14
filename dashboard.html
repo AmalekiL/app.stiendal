@@ -18,8 +18,9 @@
   <link href="images/favicon.jpg" rel="shortcut icon" type="image/x-icon">
   <link href="images/webclip.jpg" rel="apple-touch-icon">
  
-  <!-- Included AWS SDK for Cognito API -->
-  <script src="sdks/aws-sdk.min.js"></script>
+  <script type="module">
+  import { CognitoIdentityClient, CreateIdentityPoolCommand } from "@aws-sdk/client-cognito-identity";
+  </script>
 
   <!-- logging the user out -->
   <script>

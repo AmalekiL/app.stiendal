@@ -23,11 +23,14 @@
 
   <!-- logging the user out -->
   <script>
-    // Set the AWS region and credentials
-    AWS.config.region = 'us-east-1'; // Replace with your AWS region
-    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+  // Set the AWS region and credentials
+  AWS.config.update({
+    region: 'us-east-1', // Replace with your AWS region
+    credentials: new AWS.CognitoIdentityCredentials({
       IdentityPoolId: 'us-east-1:b4e1e6a8-75d7-4f6a-ad70-33f602d85b5d' // Replace with your Cognito Identity Pool ID
-    });
+    })
+  });
+
   
     const client = new AWS.CognitoIdentityServiceProvider({
       region: 'us-east-1' // Replace with your AWS region

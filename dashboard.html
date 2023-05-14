@@ -23,32 +23,42 @@
 
   <!-- logging the user out -->
   <script>
-  // Set the AWS region and credentials
-  AWS.config.update({
-    region: 'us-east-1', // Replace with your AWS region
-    credentials: new AWS.CognitoIdentityCredentials({
+    // Set the AWS region and credentials
+    AWS.config.region = 'us-east-1'; // Replace with your AWS region
+    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
       IdentityPoolId: 'us-east-1:b4e1e6a8-75d7-4f6a-ad70-33f602d85b5d' // Replace with your Cognito Identity Pool ID
-    })
-  });
-
+    });
   
     const client = new AWS.CognitoIdentityServiceProvider({
       region: 'us-east-1' // Replace with your AWS region
     });
   
     function logout() {
-      const params = {
-        AccessToken: ''
-      };
+      const cognitoUser = client.getCurrentUser();
   
-      client.globalSignOut(params, function(err, data) {
-        if (err) {
-          console.log('Error logging out:', err);
-        } else {
-          console.log('User logged out successfully');
-          window.location.href = 'https://www.stiendal.com'; // Replace with your desired redirect URL
-        }
-      });
+      if (cognitoUser) {
+        cognitoUser.getSession(function(err, session) {
+          if (err) {
+            console.log('Error getting session:', err);
+          } else {
+            const params = {
+              AccessToken: session.getAccessToken().getJwtToken()
+            };
+  
+            client.globalSignOut(params, function(err, data) {
+              if (err) {
+                console.log('Error logging out:', err);
+              } else {
+                console.log('User logged out successfully');
+                window.location.href = 'https://www.stiendal.com'; // Replace with your desired redirect URL
+              }
+            });
+          }
+        });
+      } else {
+        console.log('No user is currently logged in');
+        // Handle the case when no user is logged in
+      }
     }
   </script>
 

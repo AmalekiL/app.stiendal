@@ -18,9 +18,8 @@
   <link href="images/favicon.jpg" rel="shortcut icon" type="image/x-icon">
   <link href="images/webclip.jpg" rel="apple-touch-icon">
  
-  <script>
-  import { CognitoIdentityClient, CreateIdentityPoolCommand } from "@aws-sdk/client-cognito-identity";
-  </script>
+  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.814.0.min.js"></script>
+
 
   <!-- logging the user out -->
   <script>
@@ -30,30 +29,19 @@
       IdentityPoolId: 'us-east-1:b4e1e6a8-75d7-4f6a-ad70-33f602d85b5d' // Replace with your Cognito Identity Pool ID
     });
   
-    const client = new AWS.CognitoIdentityServiceProvider({
-      region: 'us-east-1' // Replace with your AWS region
-    });
+    const client = new AWS.CognitoIdentityServiceProvider();
   
     function logout() {
-      const cognitoUser = client.getUser();
+      const cognitoUser = client.getCurrentUser();
   
       if (cognitoUser) {
         cognitoUser.getSession(function(err, session) {
           if (err) {
             console.log('Error getting session:', err);
           } else {
-            const params = {
-              AccessToken: session.getAccessToken().getJwtToken()
-            };
-  
-            client.globalSignOut(params, function(err, data) {
-              if (err) {
-                console.log('Error logging out:', err);
-              } else {
-                console.log('User logged out successfully');
-                window.location.href = 'https://www.stiendal.com'; // Replace with your desired redirect URL
-              }
-            });
+            cognitoUser.signOut();
+            console.log('User logged out successfully');
+            window.location.href = 'https://www.stiendal.com'; // Replace with your desired redirect URL
           }
         });
       } else {

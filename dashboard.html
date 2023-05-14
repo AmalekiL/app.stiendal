@@ -34,7 +34,7 @@
     });
   
     function logout() {
-      const cognitoUser = client.getCurrentUser();
+      const cognitoUser = client.getUser();
   
       if (cognitoUser) {
         cognitoUser.getSession(function(err, session) {
